@@ -1,0 +1,6 @@
+flask
+Flask-JWT
+werkzeug
+schema
+pytest-flask
+pylama

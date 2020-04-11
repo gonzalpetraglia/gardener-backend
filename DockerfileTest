@@ -1,0 +1,12 @@
+FROM python:3.6-alpine
+
+COPY requirements.txt /tmp/
+RUN pip install --requirement /tmp/requirements.txt
+RUN pip install pytest
+COPY ./src /app
+
+ENV FLASK_APP=/app/main.py
+
+EXPOSE  5000
+WORKDIR app
+ENTRYPOINT pytest test/test_*.py

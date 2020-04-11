@@ -1,0 +1,2 @@
+docker build  --file DockerfileTest --tag gardener_test . && docker run gardener_test
+
