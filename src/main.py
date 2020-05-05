@@ -1,10 +1,7 @@
 from flask import Flask
-from flask_jwt import JWT, jwt_required, current_identity, logout_user
-
-from .User import User
-
-
 from logging.config import dictConfig
+
+from .auth import init_auth, current_user, login_required
 
 default_config = {
      'logger': {
@@ -32,33 +29,22 @@ def create_app(config=default_config):
 
     app = Flask(__name__)
 
-    def authenticate(username, password):
-        app.logger.info(password)
-        return User(1, 'a', 'ee.cm', 'aaaa', is_admin=False)
-
-    def identity(payload):
-        user_id = payload['identity']
-        return User(user_id, 'a', 'ee.cm', 'aaaa', is_admin=False)
-
-    app = Flask(__name__)
     app.debug = True
     app.config['SECRET_KEY'] = 'super-secret'
 
-    JWT(
-        app,
-        identity_handler=identity,
-        authentication_handler=authenticate
-        )
+    init_auth(app)
 
-    @app.route('/login', methods=['GET', 'POST'])
-    def login():
-        return "{}".format(current_identity.name)
-
+    @login_required
     @app.route("/logout")
-    @jwt_required
     def logout():
-        logout_user()
-        return 'ok'
+        user_id = current_user.id
+        return {'status': 'ok', 'user_id': user_id}
+
+    @login_required
+    @app.route("/profile2")
+    def profile():
+        user = current_user
+        return user
 
     @app.route("/healthcheck")
     def hi():

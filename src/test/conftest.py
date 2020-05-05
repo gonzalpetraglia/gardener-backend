@@ -13,3 +13,9 @@ def app():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def user(client):
+    rv = client.post('/auth')
+    print(rv)
