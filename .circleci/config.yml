@@ -11,9 +11,6 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
-
-      - run:
-          command: ls src
       - run:
           command: pylama
           nama: Linter
