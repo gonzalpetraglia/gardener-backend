@@ -5,16 +5,29 @@ orbs:
 
 jobs:
   build-and-test:
-    executor: python/default
+
+    docker:
+      - image: circleci/python:3.6
+        
+    # Service container image available at `host: localhost`
+    
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gardener_testing
     steps:
       - checkout
       - python/install-deps
       - run:
-          command: pylama
+          command: ./run_migrations
+          name: Migration
+      - run:
+          command: ./run_linter
           nama: Linter
 
       - run:
-          command: pytest
+          command: ./run_test
           name: Test
 
 workflows:

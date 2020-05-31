@@ -1,1 +1,8 @@
+if [ -z "$ENV" ] 
+then
+   export SIMPLE_SETTINGS='settings.default,settings.testing'
+else
+   export SIMPLE_SETTINGS='settings.default,settings.'$ENV
+fi
+
 alembic upgrade head

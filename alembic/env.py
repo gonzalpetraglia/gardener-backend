@@ -5,6 +5,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from simple_settings import settings
+
 import os
 import sys
 
@@ -32,6 +34,17 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+
+url = 'postgresql://{}:{}@{}:{}/{}'.format(
+    settings.DB_USER,
+    settings.DB_PASSWORD,
+    settings.DB_HOST,
+    settings.DB_PORT,
+    settings.DB_NAME
+)
+
+config.set_main_option('sqlalchemy.url', url)
 
 
 def run_migrations_offline():

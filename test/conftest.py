@@ -1,5 +1,6 @@
 import pytest
 from chai import Chai
+from simple_settings import settings
 
 from src.main import create_app
 from src.db import create_session_builder
@@ -9,7 +10,11 @@ from src.models.User import User
 @pytest.fixture(scope="class")
 def create_session():
     return create_session_builder(
-        'postgresql://postgres:postgres@localhost:5432/gardener_testing'
+            settings.DB_USER,
+            settings.DB_PASSWORD,
+            settings.DB_HOST,
+            settings.DB_PORT,
+            settings.DB_NAME
             )
 
 

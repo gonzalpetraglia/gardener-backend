@@ -1,32 +1,23 @@
 from flask import Flask
 from logging.config import dictConfig
+from simple_settings import settings
 
 from src.db import create_session_builder
 from src.auth.handlers import init_auth
 
-default_config = {
-     'logger': {
-            'version': 1,
-            'formatters': {'default': {
-                'format':
-                '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
-            }},
-            'handlers': {'wsgi': {
-                'class': 'logging.StreamHandler',
-                'stream': 'ext://flask.logging.wsgi_errors_stream',
-                'formatter': 'default'
-            }},
-            'root': {
-                'level': 'INFO',
-                'handlers': ['wsgi']
-            }
-        }
-    }
 
+def create_app(
+    config=settings.as_dict(),
+    create_session=create_session_builder(
+        settings.DB_USER,
+        settings.DB_PASSWORD,
+        settings.DB_HOST,
+        settings.DB_PORT,
+        settings.DB_NAME
+    )
+):
 
-def create_app(config=default_config, create_session=create_session_builder()):
-
-    dictConfig(config.get('logger'))
+    dictConfig(config['LOGGER'])
 
     app = Flask(__name__)
 

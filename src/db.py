@@ -4,8 +4,19 @@ from sqlalchemy.orm import sessionmaker
 
 
 def create_session_builder(
-    url='postgresql://postgres:postgres@localhost:5432/gardener'
-        ):
+    user,
+    password,
+    host,
+    port,
+    db_name
+):
+    url = 'postgresql://{}:{}@{}:{}/{}'.format(
+        user,
+        password,
+        host,
+        port,
+        db_name)
+
     @contextmanager
     def create_session():
         # an Engine, which the Session will use for connection
