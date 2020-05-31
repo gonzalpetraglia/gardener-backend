@@ -5,4 +5,4 @@ else
    export SIMPLE_SETTINGS='settings.default,settings.'$ENV
 fi
 
-pytest
+alembic upgrade head
